@@ -2,10 +2,10 @@
   <section class="nomads-showcase-section">
     <div class="showcase-header">
       <div class="header-left">
-        <h2 class="showcase-title">编程开发与代码重构实战模板库</h2>
-        <p class="showcase-subtitle">精选全栈开发、Bug 诊断与高性能算法场景，点击“一键套用”生成生产级代码</p>
+        <h2 class="showcase-title">实战案例与模板库 (Nomads Showcase)</h2>
+        <p class="showcase-subtitle">精选高频实战场景，点击“一键套用”快速生成高质量结果</p>
       </div>
-      <span class="showcase-badge">已收录 {{ showcaseItems.length }} 个代码框架模板</span>
+      <span class="showcase-badge">已收录 {{ showcaseItems.length }} 个实战模板</span>
     </div>
 
     <div class="showcase-grid">
@@ -16,7 +16,7 @@
       >
         <div class="card-header">
           <span class="scenario-tag">{{ item.tag }}</span>
-          <span class="usage-count">{{ item.usageCount }} 次生成</span>
+          <span class="usage-count">{{ item.usageCount }} 次应用</span>
         </div>
 
         <div class="card-content">
@@ -41,8 +41,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
+const props = defineProps<{
+  appTitle?: string;
+  isImage?: boolean;
+}>();
+
 const emit = defineEmits<{
-  (e: 'apply-template', payload: { prompt: string; scenario?: string; techStack?: string }): void;
+  (e: 'apply-template', payload: { prompt: string; style?: string }): void;
 }>();
 
 export interface ShowcaseItem {
@@ -50,73 +55,105 @@ export interface ShowcaseItem {
   tag: string;
   title: string;
   prompt: string;
-  scenario?: string;
-  techStack?: string;
+  style?: string;
   usageCount: string;
 }
 
-const showcaseItems = computed<ShowcaseItem[]>(() => [
-  {
-    id: 'biancheng-1',
-    tag: '前端全栈',
-    title: 'Vue3 + TS 大文件切片断点续传组件',
-    prompt: '编写一个 Vue3 + TypeScript 大文件分片上传 Hook，支持 SparkMD5 秒传、并发数控制（支持最多 3 个切片同时上传）、失败自动重试 3 次及断点续传。',
-    scenario: '全栈代码实现与重构',
-    techStack: 'TypeScript/Vue/React',
-    usageCount: '68.5k'
-  },
-  {
-    id: 'biancheng-2',
-    tag: 'Python后端',
-    title: 'FastAPI 异步 JWT 双 Token 无感刷新',
-    prompt: '使用 Python FastAPI + SQLAlchemy 2.0 (Async)，实现 Access Token (15分钟) 和 Refresh Token (7天) 的双 Token 无感刷新认证中间件。',
-    scenario: 'API接口与架构设计',
-    techStack: 'Python/Django/FastAPI',
-    usageCount: '52.1k'
-  },
-  {
-    id: 'biancheng-3',
-    tag: 'Java企业级',
-    title: 'Spring Boot Redis 分布式锁切面注解',
-    prompt: '使用 Redisson 封装一个 `@DistributedLock` 自定义 AOP 切面注解，支持锁自动续期、防误删及等待超时安全退出的生产级实现。',
-    scenario: '全栈代码实现与重构',
-    techStack: 'Java/Spring Boot',
-    usageCount: '59.3k'
-  },
-  {
-    id: 'biancheng-4',
-    tag: 'Go高并发',
-    title: 'Go 语言 WorkerPool 协程池与优雅退出',
-    prompt: '用 Go 编写一个泛型 WorkerPool 协程池，支持 Channel 任务队列排队、Context 超时取消、平滑优雅关闭（Graceful Shutdown）与 Panic 捕获。',
-    scenario: '算法设计与复杂度优化',
-    techStack: 'Go/Microservices',
-    usageCount: '44.7k'
-  },
-  {
-    id: 'biancheng-5',
-    tag: '数据结构',
-    title: 'O(1) 时间复杂度 LRU 缓存算法双向链表',
-    prompt: '使用 TypeScript 实现一个真正的 O(1) 查找与更新 LRU (Least Recently Used) 缓存类，利用双向链表 + Map 结构，并附带 Jest 测试用例。',
-    scenario: '算法设计与复杂度优化',
-    techStack: 'TypeScript/Vue/React',
-    usageCount: '41.2k'
-  },
-  {
-    id: 'biancheng-6',
-    tag: 'Bug诊断',
-    title: '解决 Node.js 内存泄漏与 EventListener 堆栈',
-    prompt: '诊断排查：Node.js 服务高并发运行 24 小时后发生 OOM (JavaScript heap out of memory)，定位 EventEmitter 未移除与闭包引用并重构修正。',
-    scenario: 'Bug排查与堆栈诊断',
-    techStack: 'TypeScript/Vue/React',
-    usageCount: '37.8k'
+// 模拟实战案例数据库（支持根据文本/图像类及应用主题切换）
+const showcaseItems = computed<ShowcaseItem[]>(() => {
+  if (props.isImage) {
+    return [
+      {
+        id: 'img-1',
+        tag: '写真肖像',
+        title: '商务精英形象照',
+        prompt: '高端写字楼背景，身穿深蓝色西装，眼神自信专注，赛博朋克光影效果',
+        style: '<photography>',
+        usageCount: '18.5k'
+      },
+      {
+        id: 'img-2',
+        tag: '概念插画',
+        title: '未来科幻城市海报',
+        prompt: '霓虹灯光的赛博朋克立体城市，飞行汽车，高品质概念插画，8k分辨率',
+        style: '<illustration>',
+        usageCount: '24.1k'
+      },
+      {
+        id: 'img-3',
+        tag: '二次元动漫',
+        title: '日系国潮动漫角色',
+        prompt: '穿着现代汉服的国风少年，手持纸伞，水彩漫感，唯美光感与柔光滤镜',
+        style: '<anime>',
+        usageCount: '15.9k'
+      },
+      {
+        id: 'img-4',
+        tag: '水彩艺术',
+        title: '治愈系自然风景画',
+        prompt: '晨雾中的森林湖泊，阳光穿透树林，水彩渐变质感，温馨治愈风格',
+        style: '<watercolor>',
+        usageCount: '12.3k'
+      }
+    ];
+  } else {
+    return [
+      {
+        id: 'text-1',
+        tag: '职场总结',
+        title: '周报 OKR 成果提炼',
+        prompt: '本周完成了核心模块优化与线上异常排查，请帮我梳理为具备量化指标的 OKR 汇报文案',
+        style: '专业干练，结果导向',
+        usageCount: '32.8k'
+      },
+      {
+        id: 'text-2',
+        tag: '高情商沟通',
+        title: '拒绝不合理加班话术',
+        prompt: '领导在周末突然布置非紧急任务，如何高情商、委婉且有理有据地推迟到工作日处理？',
+        style: '高情商，委婉，有情调',
+        usageCount: '28.4k'
+      },
+      {
+        id: 'text-3',
+        tag: '短视频文案',
+        title: '知识干货吸睛开头',
+        prompt: '准备制作一条关于高效学习法的短视频，设计 3 个能在前 3 秒留住用户的爆款口播开头',
+        style: '专业干练，结果导向',
+        usageCount: '45.1k'
+      },
+      {
+        id: 'text-4',
+        tag: '商务公文',
+        title: '跨部门协同申请函',
+        prompt: '因项目上线需要研发部门配合联调，撰写一份正式、严谨且明确时间节点的协同申请书',
+        style: '专业干练，结果导向',
+        usageCount: '19.7k'
+      },
+      {
+        id: 'text-5',
+        tag: '小红书种草',
+        title: '实战干货笔记排版',
+        prompt: '分享 5 个提升日常工作效率的文字工具，语言亲切，搭配吸引人的标题与 Emoji 排版',
+        style: '高情商，委婉，有情调',
+        usageCount: '36.2k'
+      },
+      {
+        id: 'text-6',
+        tag: '学术润色',
+        title: '论文摘要与结论重构',
+        prompt: '将以下粗糙的研究结论重写为学术规范、逻辑严密且无语法语病的论文摘要总结',
+        style: '专业干练，结果导向',
+        usageCount: '22.0k'
+      }
+    ];
   }
-]);
+});
 
 function applyTemplate(item: ShowcaseItem) {
   emit('apply-template', {
     prompt: item.prompt,
-    scenario: item.scenario,
-    techStack: item.techStack
+    style: item.style
   });
 }
 </script>
